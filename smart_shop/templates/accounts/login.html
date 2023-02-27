@@ -1,0 +1,87 @@
+{% extends 'home/base.html' %}
+{% block title %} SMART SHOP {% endblock %}
+{% block content %}
+{% load static %}
+
+<!-- PAGE TITLE
+        ================================================== -->
+<section class="page-title-section bg-img cover-background"
+    data-background="{% static '/home/img/bg/page-title.jpg' %}">
+    <div class="container">
+
+        <div class="title-info">
+            <h1>Login </h1>
+        </div>
+
+
+    </div>
+</section>
+
+<!-- LOGIN REGISTER
+        ================================================== -->
+<section class="md">
+    <div class="container">
+        <div class="row">
+
+            <div class="col-lg-6 mb-1-9 mb-lg-0">
+
+                <div class="common-block">
+
+                    <div class="inner-title">
+                        <h4 class="mb-0">Login</h4>
+                        <p class="mb-0">Everything is simple with Login.</p>
+                    </div>
+
+                    <form action="" method="POST">
+                        {% csrf_token %}
+
+                        <div class="row">
+
+                            <div class="col-sm-12">
+
+                                <div class="form-group">
+                                    <label>Email</label>
+                                    <input type="email" class="form-control" id="email1" onkeyup="validateEmail1()"
+                                        name="email" placeholder="Your email here">
+                                    <span id="login-email-error"></span>
+                                </div>
+
+                            </div>
+
+                            <div class="col-sm-12">
+
+                                <div class="form-group">
+                                    <label>Password </label>
+                                    <input type="password" class="form-control" id="password"
+                                        onkeyup="validatePassword()" name="password" placeholder="Your password here">
+                                    <span id="error"></span>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+
+                        <div class="col-sm-6 text-start text-md-end " style="position: relative;left:236px">
+                            <a href="account-password-recovery.html" class="m-link-muted">Forgot password?</a>
+                        </div>
+                        <button type="submitlogin" value="submit" onclick="return validateForm1()" class="butn-style2 mt-4" style="position: relative;bottom: 50px;">Login</button>
+                        <span id="login-submit-error"></span>
+                        <p> if you do not have an accout,Then <a href="{% url 'signup' %}"><u>Signup</u></a> here</p>
+                        <a href="{% url 'mobile_login' %}"><u>Login with OTP</u></a> here</p>
+
+
+
+
+                    </form>
+
+                </div>
+
+            </div>
+
+            
+
+
+</section>
+{% endblock %}

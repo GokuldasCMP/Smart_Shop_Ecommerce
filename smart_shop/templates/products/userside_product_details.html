@@ -1,0 +1,151 @@
+{% extends 'home/base.html' %}
+{% block title %} SMART SHOP {% endblock %}
+{% block content %}
+{% load static %}
+
+<!-- PAGE TITLE
+        ================================================== -->
+<section class="page-title-section bg-img cover-background" data-background="{% static 'home/img/bg/page-title.jpg' %}">
+    <div class="container">
+
+        <div class="title-info">
+            <h1> Product Details</h1>
+        </div>
+        <div class="breadcrumbs-info">
+            <ul class="ps-0">
+
+
+            </ul>
+        </div>
+
+    </div>
+</section>
+
+<!-- PRODUCT DETAILS
+        ================================================== -->
+<section class="md">
+    <div class="container">
+
+        <!-- product section -->
+
+        <div class="row mb-6 mb-md-7 mb-lg-9">
+            <div class="col-lg-5 text-center text-lg-start mb-1-9 mb-lg-0">
+
+                <!-- product left start -->
+
+                <div class="xzoom-container">
+                    <img class="xzoom5 mb-1-9" id="xzoom-magnific" src="{{ single_product.image.url }}"
+                        xoriginal="{{ product.image.url }}" alt="..." />
+                    <div class="xzoom-thumbs no-margin">
+                        <a href="{{ single_product.image1.url }}"><img class="xzoom-gallery5" width="80"
+                                src="{{ single_product.image1.url }}" title="The description goes here"></a>
+                        <a href="{{ single_product.image2.url }}"><img class="xzoom-gallery5" width="80"
+                                src="{{ single_product.image2.url }}" title="The description goes here"></a>
+                        <a href="{{ single_product.image3.url }}"><img class="xzoom-gallery5" width="80"
+                                src="{{ single_product.image3.url }}" title="The description goes here"></a>
+
+                    </div>
+                </div>
+
+                <!-- product left end -->
+
+            </div>
+            <div class="col-lg-7 ps-lg-2-3">
+             <form action="{% url 'add_cart' single_product.id %}" method="POST">
+                {% csrf_token %}
+                <div class="product-detail">
+                    <h2 class="mb-1">{{single_product.product_name }}<span
+                           ></span></h2>
+                    <div class="bg-primary separator-line-horrizontal-full mb-4"></div>
+
+                   
+
+                    <div class="mb-4">
+
+                        <div class="d-inline-block me-3 pe-3 borders-end border-color-extra-medium-gray">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star-half-alt"></i>
+                        </div>
+
+                        <div class="d-inline-block">
+                            <a class="text-primary" href="#">Write a review</a>
+                        </div>
+
+                    </div>
+                    <div class="mb-4">
+
+                        <span class="display-26 font-weight-700 text-primary">₹{{single_product.price}}</span>
+
+                    </div>
+
+                    <div class="row">
+                        <div class="col-5 col-md-3">
+                            <label>Size</label>
+
+                            <select  class="mb-4 form-control medium form-select" name="size" required>
+                                <option value="" disabled selected>Choose Size</option>
+                                {% for i in single_product.variations_set.sizes %}
+                                <option value="{{i.variation_value | lower}}">{{i.variation_value | capfirst}}</option>
+                                {% endfor %}
+                                
+                            </select>
+
+                        </div>
+                        <div class="col-5 col-md-3">
+                            <label>Color</label>
+
+                            <select  class="mb-4 form-control medium form-select" name="color" required>
+                                <option value="" disabled selected>Choose Color</option>
+                                {% for i in single_product.variations_set.colors %}
+                                <option value="{{i.variation_value  | lower}}">{{i.variation_value | capfirst}}</option>
+                                {% endfor %}
+            
+                            </select>
+
+                        </div>
+
+                    </div>
+                    <div class="row">
+                      
+
+                    </div>
+
+                    <div class="row mb-4">
+                        <div class="col-lg-12">
+                            {% if single_product.stock <= 0 %} 
+                                <h5 class="text-danger">Out of Stock</h5>
+                                {% else %}
+                                  
+
+                                          
+                                           <button type="submit" class="butn-style2 me-3 mb-2 mb-md-0"><span><i
+                                                class="fas fa-shopping-cart me-1"></i> Add to Cart</span></button></a>
+                            
+                                   
+                                {% endif %}
+                                <button class="butn-style2 dark"><span><i class="fas fa-heart me-1"></i> Add to
+                                        wishlist</span></button>
+                        </div>
+                    </div>
+
+                    <div class="row">
+
+
+
+                    </div>
+                </div>
+            </form>
+            </div>
+        </div>
+
+        <!-- end product section -->
+
+
+
+    </div>
+</section>
+
+{% endblock %}

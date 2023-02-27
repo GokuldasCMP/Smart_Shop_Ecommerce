@@ -1,0 +1,37 @@
+<!-- {% extends 'base.html' %} -->
+{% block title %} SMART SHOP{% endblock %}
+{% block content %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+<div class="container text-center bg- mt-5" style="background-color: rgb(248, 246, 250);">
+
+    <h5> Enter the OTP number here{{id}}</h5>
+    <form action="" method="post">
+        {% csrf_token %}
+        <div class="col-sm-6 " style=" margin-left: 272px;">
+
+            <div class="form-group">
+                
+                <input type="number" class="form-control" id="otp"  name="otp"
+                    placeholder="123456">
+                    <!-- onkeyup="validatePhone()" -->
+                <span id="otp-error"></span>
+            </div>
+
+        </div>
+
+
+
+        <a href="{% url 'home' %}"> <button type="submitsignup" value="submit" onclick="return validateForm()"
+            class="butn-style2 mt-4">Submit</button></a> 
+        <span id="submit-error"></span>
+        
+        
+
+
+    </form>
+
+
+
+    {% endblock %}

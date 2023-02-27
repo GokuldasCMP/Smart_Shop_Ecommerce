@@ -1,0 +1,160 @@
+{% extends 'adminpanel/adminbase.html' %}
+{% block title %} SMART SHOP{% endblock %}
+{% block content %}
+{% load static %}
+
+<!-- PAGE INNER
+            ================================================== -->
+<div class="page-inner">
+
+    <!-- PAGE MAIN WRAPPER
+                ================================================== -->
+    <div id="main-wrapper">
+
+        <!-- row -->
+        <div class="row align-items-center grid-margin">
+            <div class="col-12">
+                <div class="card card-white">
+                    <div class="card-body row align-items-center">
+                        <div class="col-12 col-sm">
+                            <h4 class="mb-4 mb-sm-0 text-center text-sm-start">Category</h4>
+                        </div>
+                    </div>
+                </div>
+                <br>
+
+                <a href="{% url 'add_category'%}" class="btn btn-primary btn-md">Add Category</a>
+            </div>
+        </div>
+        <!-- end row -->
+
+        <!-- row -->
+        <div class="row">
+            <div class="col-12 grid-margin">
+                <div class="card card-white">
+                    <div class="card-body slimscroll">
+                        <div class="table-responsive">
+                            {% if categories %}
+                            <table class="table">
+                                <thead class="bg-light">
+                                    <tr>
+                                        <!-- <th scope="col">ID</th> -->
+                                        <th scope="col">Id</th>
+                                        <th scope="col">Category Name</th>
+                                        <th scope="col">Slug</th>
+
+                                        <th scope="col">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    {% for i in categories %}
+                                    <tr>
+
+                                        <th scope="row">{{i.id}}</th>
+
+                                        <td>{{i.category_name}}</td>
+                                        <td>{{i.slug}}</td>
+
+                                        <td>
+                                            <!-- Button trigger modal -->
+                                            <button type="button" class="btn btn-danger" data-bs-toggle="modal"
+                                                data-bs-target="#a{{i.id}}">
+                                                Delete
+                                            </button>
+
+                                            <!-- Modal -->
+                                            <div class="modal fade" id="a{{i.id}}" tabindex="-1"
+                                                aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h1 class="modal-title fs-5" id="exampleModalLabel">Alert
+                                                            </h1>
+                                                            <button type="button" class="btn-close"
+                                                                data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            Do You Want To Delete Category {{i.category_name}} ?
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary"
+                                                                data-bs-dismiss="modal">Close</button>
+                                                            <a href="{% url 'delete_category' i.id %}"><button
+                                                                    type="button"
+                                                                    class="btn btn-primary">Delete</button></a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+
+
+
+
+
+
+
+                                            <a href="{% url 'update_category' i.id%}"><button type="button"
+                                                    class="btn btn-primary">
+                                                    Update
+                                                </button></a>
+
+
+
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                            {% else %}
+                            <h4 class="text-center">No records</h4>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <nav aria-label="Page navigation example">
+                {% if categories.has_other_pages %}
+                <ul class="pagination">
+                    {% if categories.has_previous %}
+                    <li class="page-item"><a class="page-link"
+                            href="?page={{categories.previous_page_number}}">Previous</a></li>
+                    {% else %}
+                    <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+                    {% endif %}
+                    {% for i in categories.paginator.page_range %}
+                    {% if categories.number == i %}
+                    <li class="page-item"><a class="page-link" href="#">{{i}}</a></li>
+                    {% else %}
+                    <li class="page-item"><a class="page-link" href="?page={{i}}">{{i}}</a></li>
+                    {% endif %}
+                    {% endfor %}
+                    {% if categories.has_next %}
+
+                    <li class="page-item"><a class="page-link" href="?page={{categories.next_page_number}}">Next</a>
+                    </li>
+                    {% else %}
+                    <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                    {% endif %}
+                </ul>
+                {% endif %}
+            </nav>
+        </div>
+
+        <!-- end row -->
+    </div>
+
+    <div class="page-footer">
+        <p>Copyright &copy; <span class="current-year"></span> Smartshop All rights reserved.</p>
+    </div>
+</div>
+<script>
+    document.getElementById("id_category_name").onkeyup = function () {
+        document.getElementById("id_slug").value = document.getElementById("id_category_name").value.toLowerCase().replaceAll(" ", "-");
+    }
+</script>
+
+
+{% endblock %}

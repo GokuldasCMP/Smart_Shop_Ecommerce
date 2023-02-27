@@ -1,0 +1,222 @@
+{% extends 'adminpanel/adminbase.html' %}
+{% block title %} SMART SHOP{% endblock %}
+{% load static %}
+{% block content %}
+
+
+
+<!-- PAGE INNER
+            ================================================== -->
+<div class="page-inner">
+
+    <!-- PAGE MAIN WRAPPER
+                ================================================== -->
+    <div id="main-wrapper">
+        <!-- row -->
+        <div class="row align-items-center grid-margin">
+            <div class="col-12">
+                <div class="card card-white">
+                    <div class="card-body row align-items-center">
+                        <div class="col-12 col-md-5 mb-4 mb-md-0">
+                            <h4 class="mb-0">Manage Orders</h4>
+                        </div>
+
+                        <div class="col-12 col-md-7">
+
+                            <div class="row">
+
+
+
+
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- end row -->
+
+        <!-- Row -->
+        <div class="row">
+            <div class="col-12 grid-margin">
+                <div class="card card-white">
+                    <div class="card-body">
+                        {% if orders %}
+                        <table class="table table-responsive">
+                            <thead class="bg-light">
+                                <tr>
+                                    <th scope="col">Id</th>
+                                    <th scope="col">Name</th>
+                                    <th scope="col">Email</th>
+                                    <th scope="col">phone</th>
+                                    <th scope="col">Amount</th>
+                                    <th scope="col">Payment </th>
+                                    <th scope="col">Tracking Id</th>
+                                    <th scope="col">Status</th>
+                                    <th scope="col">Action</th>
+                                    <th scope="col"></th>
+
+
+
+
+                                </tr>
+                            </thead>
+                            <tbody id="myTable">
+                                {% for i in orders %}
+                                <tr>
+                                    <th scope="row">{{i.id}}</th>
+                                    <td>{{i.full_name}}</td>
+                                    <td>{{i.email}}</td>
+                                    <td>{{i.phone}}</td>
+                                    <td>₹{{i.order_total}}</td>
+                                    <td>{{i.payment.payment_method}}</td>
+                                    <td>{{i.order_number}}</td>
+                                    <td>{{i.status}}</td>
+                                    <td>
+                                        {% if i.status == 'Delivered' %}
+                                        <span class="badge badge-success" ><h6 style="color: rgb(4, 122, 30);">Delivered</h6></span>
+                                        {% elif i.status == 'Cancelled' %}
+                                        <span class="badge badge-danger"><h6 style="color: rgb(239, 10, 10);">Cancelled</h6></span>
+                                        {% elif i.status == 'Returned' %}
+                                        <span class="badge badge-warning"><h6 style="color: rgb(241, 241, 36);">Returned</h6></span>
+                                        {% else %}
+                                        <label type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
+                                            data-bs-target="#myModal{{i.id}}" id="Modal_button ">Change</button>
+                                            {%endif%}
+                                    </td>
+                                    <td>
+                                        {% if i.status == 'Order Confirmed' %}
+                                        <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal"
+                                            data-bs-target="#cancel{{i.id}}">Cancel</button>
+                                        {% elif i.is_returned %}
+                                        <b>Reason : </b>
+                                        <p>{{i.return_reason}}</p>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+
+
+
+                                <!-- Modal -->
+
+                                <div class="modal fade" id="myModal{{i.id}}" tabindex="-1" role="dialog"
+                                    aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5>Change Status</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <form action="{% url 'update_order' i.id %}" method="POST">
+                                                    {% csrf_token %}
+                                                    {% if i.status == 'Order Confirmed' %}
+                                                    <label for="status">Change Status:</label>
+                                                    <select name="status" id="status_change">
+                                                        <option value="Shipped">Shipped</option>
+                                                        <option value="Out For Delivery">Out For Delivery</option>
+                                                        <option value="Delivered">Delivered</option>
+                                                    </select>
+                                                    {% elif i.status == 'Shipped' %}
+                                                    <select name="status" id="status_change">
+                                                        <option value="Out For Delivery">Out For Delivery</option>
+                                                        <option value="Delivered">Delivered</option>
+                                                    </select>
+                                                    {% else %}
+                                                    <select name="status" id="status_change">
+                                                        <option value="Delivered">Delivered </option >
+                                                    </select>
+                                                    {% endif %}
+
+                                                    <br><br>
+                                                    <input type="submit" value="Submit">
+                                                </form>
+                                            </div>
+
+
+
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <!-- Modal -->
+
+
+
+
+                                <div class="modal fade" id="cancel{{i.id}}" tabindex="-1" role="dialog"
+                                    aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel">Cancel Order</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                            </div>
+                                            <div class="modal-body text-left">
+                                                Are you sure to cancel the order <b>#{{i.order_number}}</b>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary"
+                                                    data-bs-dismiss="modal">No</button>
+                                                <a href="{% url 'cancel_order' i.order_number %}"><button type="button"
+                                                        class="btn btn-primary">Yes</button></a>
+
+                                            </div>
+
+
+
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+
+                            </tbody>
+                        </table>
+                        {% else %}
+                        <h4 class="text-center">No records</h4>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Start pagination -->
+        <nav class="mb-3 mt-3" aria-label="page navigation sample">
+            {% if orders.has_other_pages %}
+            <ul class="pagination">
+                {% if orders.has_previous %}
+                <li class="page-item"><a class="page-link " href="?page={{orders.previous_page_number}}">Previous</a>
+                </li>
+                {% else %}
+                <li class="page-item disabled"><a class="page-link " href="#">Previous</a></li>
+                {% endif %}
+                {% for i in orders.paginator.page_range %}
+                {% if orders.number == i %}
+                <li class="page-item active"><a class="page-link " href="#">{{i}}</a></li>
+                {% else %}
+                <li class="page-item"><a class="page-link " href="?page={{i}}">{{i}}</a></li>
+                {% endif %}
+                {% endfor %}
+                {% if orders.has_next %}
+                <li class="page-item"><a class="page-link" href="?page={{orders.next_page_number}}">Next</a></li>
+                {% else %}
+                <li class="page-item disabled"><a class="page-link" href="#">Next</a></li>
+                {% endif %}
+            </ul>
+            {% endif %}
+        </nav>
+
+        <!-- Row -->
+    </div>
+
+
+    <div class="page-footer">
+        <p>Copyright &copy; <span class="current-year"></span> Smartshop All rights reserved.</p>
+    </div>
+</div>
+
+{% endblock %}

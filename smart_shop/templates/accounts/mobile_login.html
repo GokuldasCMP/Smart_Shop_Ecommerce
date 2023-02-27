@@ -1,0 +1,40 @@
+{% extends 'home/base.html' %}
+{% block title %} SMART SHOP{% endblock %}
+{% block content %}
+{% load static %}
+
+
+<div class="container text-center bg- mt-5" style="background-color: rgb(248, 246, 250);">
+
+    
+    <form action="" method="POST">
+        {% csrf_token %}
+
+        <div class="col-sm-6" >
+
+            <div class="form-group" style="position:relative; left:278px">
+                <label> Your Phone Number Here</label>
+                <input type="number" class="form-control" id="phone"  name="phone"
+                    placeholder="+40-123 456 789" maxlength="10" minlength="10" required>
+                    <!-- onkeyup="validatePhone()" -->
+                <span id="phone-error"></span>
+            </div>
+
+        </div>
+
+
+
+        <a href="{% url 'verify_codelogin' %}"><button type="submitsignup" value="submit" 
+            class="butn-style2 mt-4">Submit</button></a>
+            <!-- onclick="return validateForm()" -->
+        <span id="submit-error"></span>
+
+
+
+
+
+    </form>
+
+
+
+    {% endblock %}
