@@ -199,6 +199,7 @@ def cash_on_delivery(request, id):
         tax = (2*total)/100
         shipping = (2*total)/100
         grand_total = order.order_total+ shipping
+        grand_total = format(grand_total, '.2f')
         order.order_total = grand_total
         order.save()
 
