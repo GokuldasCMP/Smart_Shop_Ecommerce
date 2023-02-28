@@ -102,6 +102,8 @@ class UserCoupon(models.Model):
     def __str__(self):  
         return str(self.id)
     
+    
+    
 
 
 class Address(models.Model):
