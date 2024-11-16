@@ -306,15 +306,7 @@ def cancel_order(request, id):
             var.save()
             
 
-    # profile = UserProfile.objects.get(user=request.user)
-
-    # print(profile)
-    # if payment.status == 'True':
-    #     print('hlo')
-    #     print(payment.amount_paid)
-    #     profile.wallet += payment.amount_paid
-    #     print(profile.wallet)
-    #     profile.save()
+   
 
     payment.delete()
     if request.user.is_superuser:
@@ -353,13 +345,7 @@ def return_order(request, id):
             var.save()
             print('ann')
 
-    # profile = UserProfile.objects.get(user=request.user)
-    # if payment.status == 'True':
-    #     print('hlo')
-    #     print(payment.amount_paid)
-    #     profile.wallet += payment.amount_paid
-    #     print(profile.wallet)
-    #     profile.save()
+   
 
     payment.delete()
     return redirect('my_orders')
